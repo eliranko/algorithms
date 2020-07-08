@@ -1,0 +1,20 @@
+.container {
+    margin: 10px 0 0 10px;
+    overflow: auto;
+}
+
+.interaction {
+    display: flex;
+
+    Button {
+        margin-left: 20px;
+    }
+}
+
+.canvas-container {
+    margin-top: 20px;
+
+    canvas {
+        border: white solid 1px;
+    }
+}
