@@ -26,10 +26,25 @@ class ShortestPath extends React.Component {
         this.canvas = document.getElementById(canvasId);
         this.ctx = this.canvas.getContext('2d');
         this.drawGrid(this.state.rows, this.state.cols);
+
+        this.props.cableApp.cable.subscriptions.create('PathsChannel', {
+            received: this.listenToPathUpdates.bind(this)
+        });
     }
 
     componentDidUpdate() {
         this.drawGrid(this.state.rows, this.state.cols);
+    }
+
+    listenToPathUpdates(data) {
+        let color = data.done ? "green" : "black";
+
+        for (let point of data.points) {
+            point = Object.assign(new Point(), point);
+            if (point.equals(this.points[0]) || point.equals(this.points[1])) continue;
+
+            this.drawPoint(point, color);
+        }
     }
 
     handleGridChange(event) {
@@ -94,14 +109,14 @@ class ShortestPath extends React.Component {
 
     handleFindPathClick() {
         let body = JSON.stringify({
-            grid: {
+            grid_attributes: {
                 rows: this.state.rows,
                 cols: this.state.cols
             },
-            points: this.points
+            points_attributes: this.points
         });
 
-        fetch('/api/shortestpath', {
+        fetch('/api/path_finder/find', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
