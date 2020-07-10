@@ -5,7 +5,7 @@ class Api::PathFinderController < ApplicationController
     req = PathRequest.create(path_request_params)
     render json: { message: 'Validation failed', errors: req.errors }, status: 400 unless req.valid?
 
-    PathWorker.perform_async(req.id)
+    PathWorker.perform_async(req.id, params[:metric])
     render json: {}, status: 200
   end
 

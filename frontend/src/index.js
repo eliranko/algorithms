@@ -9,9 +9,9 @@ const CableApp = {};
 CableApp.cable = actionCable.createConsumer('ws://localhost:4000/cable');
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App cableApp={CableApp} />
-  </React.StrictMode>,
+  // <React.StrictMode>
+  <App cableApp={CableApp} />,
+  // </React.StrictMode>,
   document.getElementById('root')
 );
 

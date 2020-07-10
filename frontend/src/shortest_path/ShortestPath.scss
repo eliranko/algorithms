@@ -5,9 +5,19 @@
 
 .interaction {
     display: flex;
+    flex-direction: row;
+
+    .choose-row-col {
+        max-width: 120px;
+    }
 
     Button {
         margin-left: 20px;
+    }
+
+    .choose-metric {
+        margin-left: 10px;
+        min-width: 100px;
     }
 }
 
