@@ -1,4 +1,16 @@
-.typography {
-    padding-right: 10px;
-    user-select: none;
+header {
+    .typography {
+        padding-right: 10px;
+        user-select: none;
+    }
+
+    .container {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+
+        .left {
+            display: flex;
+        }
+    }
 }
