@@ -11,17 +11,4 @@ class Api::UsersController < ApplicationController
 
     render json: { user: User.find(token_user_id) }, status: :ok
   end
-
-  private
-
-  def authenticate
-    render stauts: 400 unless authenticate_token
-    true
-  end
-
-  def authenticate_token
-    authenticate_with_http_token do |token, _options|
-      @token = Auth::Jwt.decode(token)
-    end
-  end
 end

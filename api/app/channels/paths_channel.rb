@@ -2,6 +2,6 @@
 
 class PathsChannel < ApplicationCable::Channel
   def subscribed
-    stream_from 'paths'
+    stream_for user
   end
 end

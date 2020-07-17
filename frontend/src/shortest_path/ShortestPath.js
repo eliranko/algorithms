@@ -32,14 +32,20 @@ class ShortestPath extends React.Component {
         this.canvas = document.getElementById(canvasId);
         this.ctx = this.canvas.getContext('2d');
         this.drawGrid(this.state.rows, this.state.cols);
-
-        this.props.cableApp.cable.subscriptions.create('PathsChannel', {
-            received: this.listenToPathUpdates.bind(this)
-        });
+        this.subscribeCable();
     }
 
     componentDidUpdate() {
         this.drawGrid(this.state.rows, this.state.cols);
+        this.subscribeCable();
+    }
+
+    subscribeCable() {
+        if (!this.props.cableApp) return;
+
+        this.props.cableApp.cable.subscriptions.create('PathsChannel', {
+            received: this.listenToPathUpdates.bind(this)
+        });
     }
 
     listenToPathUpdates(data) {
@@ -126,7 +132,8 @@ class ShortestPath extends React.Component {
         fetch('/api/path_finder/find', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + this.props.token
             },
             body: body
         }).catch(err => console.error(err));

@@ -8,19 +8,28 @@ import Registration from './authentication/registration/registration.js';
 import Profile from './profile/profile.js';
 import Login from './authentication/login/login.js';
 import * as JwtDecode from 'jwt-decode';
+import actionCable from 'actioncable';
 
 class App extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            user: null
+            user: null,
+            token: "",
+            cableApp: null
         };
     }
 
     componentDidMount() {
         const token = localStorage.getItem('token');
         if (!token) return;
+        this.setState({
+            token: token,
+            cableApp: {
+                cable: actionCable.createConsumer(`ws://localhost:4000/cable?token=${token}`)
+            }
+        });
 
         fetch(`/api/users/${JwtDecode(token).userID}`, {
             headers: {
@@ -43,7 +52,7 @@ class App extends React.Component {
                 <Router>
                     <Switch>
                         <Route path="/shortest">
-                            <ShortestPath cableApp={this.props.cableApp} />
+                            <ShortestPath cableApp={this.state.cableApp} token={this.state.token} />
                         </Route>
                         <Route path="/registration">
                             <Registration />
